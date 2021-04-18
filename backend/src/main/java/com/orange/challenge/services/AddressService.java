@@ -32,4 +32,18 @@ public class AddressService {
 		return new AddressDTO(entity);
 	}
 
+	@Transactional
+	public AddressDTO insert(AddressDTO dto) {
+		Address entity = new Address();
+		entity.setPublicarea(dto.getPublicarea());
+		entity.setNumber(dto.getNumber());
+		entity.setComplement(dto.getComplement());
+		entity.setDistrict(dto.getDistrict());
+		entity.setCity(dto.getCity());
+		entity.setState(dto.getState());
+		entity.setZipcode(dto.getZipcode());
+		entity= repository.save(entity);
+		return new AddressDTO(entity);
+	}
+
 }
