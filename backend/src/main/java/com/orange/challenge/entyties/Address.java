@@ -16,27 +16,27 @@ public class Address implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	private Long id;
-	private String publicArea;
+	private String publicarea;
 	private int number;
 	private String complement;
 	private String district;
 	private String city;
 	private String state;
-	private String zipCode;
+	private String zipcode;
 	
 	public Address() {
 	}
 
-	public Address(Long id, String publicArea, int number, String complement, String district, String city,
-			String state, String zipCode) {
+	public Address(Long id, String publicarea, int number, String complement, String district, String city,
+			String state, String zipcode) {
 		this.id = id;
-		this.publicArea = publicArea;
+		this.publicarea = publicarea;
 		this.number = number;
 		this.complement = complement;
 		this.district = district;
 		this.city = city;
 		this.state = state;
-		this.zipCode = zipCode;
+		this.zipcode = zipcode;
 	}
 
 	public Long getId() {
@@ -47,12 +47,12 @@ public class Address implements Serializable {
 		this.id = id;
 	}
 
-	public String getPublicArea() {
-		return publicArea;
+	public String getPublicarea() {
+		return publicarea;
 	}
 
-	public void setPublicArea(String publicArea) {
-		this.publicArea = publicArea;
+	public void setPublicarea(String publicarea) {
+		this.publicarea = publicarea;
 	}
 
 	public int getNumber() {
@@ -95,12 +95,16 @@ public class Address implements Serializable {
 		this.state = state;
 	}
 
-	public String getZipCode() {
-		return zipCode;
+	public String getZipcode() {
+		return zipcode;
 	}
 
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
+	public void setZipcode(String zipcode) {
+		this.zipcode = zipcode;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	@Override
@@ -127,7 +131,8 @@ public class Address implements Serializable {
 			return false;
 		return true;
 	}
+
 	
-	
+		
 
 }
