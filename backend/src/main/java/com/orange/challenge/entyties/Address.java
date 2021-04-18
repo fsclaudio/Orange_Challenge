@@ -1,6 +1,20 @@
 package com.orange.challenge.entyties;
 
-public class Address {
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "tb_address")
+public class Address implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	private Long id;
 	private String publicArea;
 	private int number;
@@ -15,7 +29,6 @@ public class Address {
 
 	public Address(Long id, String publicArea, int number, String complement, String district, String city,
 			String state, String zipCode) {
-		super();
 		this.id = id;
 		this.publicArea = publicArea;
 		this.number = number;
