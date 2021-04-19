@@ -1,24 +1,55 @@
 package com.orange.challenge.entyties;
 
+import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
-public class User {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "tb_users")
+public class User implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	private Long id;
-	private String userName;
-	private String userEmail;
-	private String UserCpf;
-	private Instant userBirtDate;
+	private String name;
+	
+	@Column(nullable = false, length = 250, unique=true)
+	private String email;
+	
+	@Column(nullable = false, length = 11, unique=true)
+	private String cpf;
+	
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant birtdate;
+	
+	@ManyToMany
+	@JoinTable(name= "tb_user_address",
+	     joinColumns = @JoinColumn(name= "user_id" ),
+	     inverseJoinColumns = @JoinColumn(name= "address_id")
+			)
+	Set<Address> addresses = new HashSet<>();
 	
 	public User() {
 	}
 
-	public User(Long id, String userName, String userEmail, String userCpf, Instant userBirtDate) {
-		super();
+	public User(Long id, String name, String email, String cpf, Instant birtdate) {
 		this.id = id;
-		this.userName = userName;
-		this.userEmail = userEmail;
-		UserCpf = userCpf;
-		this.userBirtDate = userBirtDate;
+		this.name = name;
+		this.email = email;
+		this.cpf = cpf;
+		this.birtdate = birtdate;
 	}
 
 	public Long getId() {
@@ -29,36 +60,40 @@ public class User {
 		this.id = id;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getName() {
+		return name;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getUserEmail() {
-		return userEmail;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public String getUserCpf() {
-		return UserCpf;
+	public String getCpf() {
+		return cpf;
 	}
 
-	public void setUserCpf(String userCpf) {
-		UserCpf = userCpf;
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
-	public Instant getUserBirtDate() {
-		return userBirtDate;
+	public Instant getBirtDate() {
+		return birtdate;
 	}
 
-	public void setUserBirtDate(Instant userBirtDate) {
-		this.userBirtDate = userBirtDate;
+	public void setBirtDate(Instant birtDate) {
+		this.birtdate = birtDate;
+	}
+
+	public Set<Address> getAddresses() {
+		return addresses;
 	}
 
 	@Override
@@ -85,6 +120,8 @@ public class User {
 			return false;
 		return true;
 	}
+
+
 	
 	
 

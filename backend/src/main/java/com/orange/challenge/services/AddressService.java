@@ -4,14 +4,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.orange.challenge.dto.AddressDTO;
 import com.orange.challenge.entyties.Address;
 import com.orange.challenge.repositories.AddressRepository;
-import com.orange.challenge.services.exceptions.EntityNotFoundException;
+import com.orange.challenge.services.exceptions.DataBaseException;
+import com.orange.challenge.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class AddressService {
@@ -28,7 +33,7 @@ public class AddressService {
 	@Transactional(readOnly = true) 
 	public AddressDTO findById(Long id) {
 		Optional<Address> obj = repository.findById(id);
-		Address entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+		Address entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 		return new AddressDTO(entity);
 	}
 
@@ -44,6 +49,39 @@ public class AddressService {
 		entity.setZipcode(dto.getZipcode());
 		entity= repository.save(entity);
 		return new AddressDTO(entity);
+	}
+
+	@Transactional
+	public AddressDTO update(Long id, AddressDTO dto) {
+		try {
+		Address entity = repository.getOne(id);
+		entity.setPublicarea(dto.getPublicarea());
+		entity.setNumber(dto.getNumber());
+		entity.setComplement(dto.getComplement());
+		entity.setDistrict(dto.getDistrict());
+		entity.setCity(dto.getCity());
+		entity.setState(dto.getState());
+		entity.setZipcode(dto.getZipcode());
+		entity= repository.save(entity);
+		return  new AddressDTO(entity);
+		}
+		catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Id not found! " +id); 
+		}
+		
+	}
+
+	public void delete(Long id) {
+		try {
+		repository.deleteById(id);
+		}
+		catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("Id not found! " +id);
+		}
+		
+		catch (DataIntegrityViolationException e) {
+			throw new DataBaseException("Integrity Violation");
+		}
 	}
 
 }

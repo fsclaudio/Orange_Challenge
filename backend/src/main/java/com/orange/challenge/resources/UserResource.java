@@ -15,45 +15,44 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.orange.challenge.dto.AddressDTO;
-import com.orange.challenge.services.AddressService;
+import com.orange.challenge.dto.UserDTO;
+import com.orange.challenge.services.UserService;
 
 @RestController
-@RequestMapping(value = "/adresses")
-public class AddressResource {
+@RequestMapping(value = "/users")
+public class UserResource {
 
 	@Autowired
-	private AddressService service;
-	
+	private UserService service;
+
 	@GetMapping /// Chamado get
-	public ResponseEntity<List<AddressDTO>> findAll(){
-		List<AddressDTO> list = service.findAll();
+	public ResponseEntity<List<UserDTO>> findAll() {
+		List<UserDTO> list = service.findAll();
 		return ResponseEntity.ok().body(list); // resposta 200
 	}
-	
+
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<AddressDTO> findById(@PathVariable Long id){
-		AddressDTO dto = service.findById(id);
+	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+		UserDTO dto = service.findById(id);
 		return ResponseEntity.ok().body(dto); // resposta 200
 	}
-	
+
 	@PostMapping
-	public ResponseEntity<AddressDTO> insert(@RequestBody AddressDTO dto){
+	public ResponseEntity<UserDTO> insert(@RequestBody UserDTO dto) {
 		dto = service.insert(dto);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(dto.getId()).toUri();
-		return ResponseEntity.created(uri).body(dto); //resposta 201
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
+		return ResponseEntity.created(uri).body(dto); // resposta 201
 	}
-	
+
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<AddressDTO> update(@PathVariable Long id, @RequestBody AddressDTO dto){
-		dto = service.update(id,dto);
+	public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserDTO dto) {
+		dto = service.update(id, dto);
 		return ResponseEntity.ok().body(dto);
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id){
-		 service.delete(id);
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 }

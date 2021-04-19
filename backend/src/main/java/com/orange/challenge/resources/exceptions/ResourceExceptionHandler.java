@@ -9,13 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.orange.challenge.services.exceptions.EntityNotFoundException;
+import com.orange.challenge.services.exceptions.DataBaseException;
+import com.orange.challenge.services.exceptions.ResourceNotFoundException;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
-	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<StandardError> entityNotFound(EntityNotFoundException e, HttpServletRequest request ){
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<StandardError> entityNotFound(ResourceNotFoundException e, HttpServletRequest request ){
 		StandardError err = new StandardError();
 		err.setTimestamp(Instant.now());
 		err.setStatus(HttpStatus.NOT_FOUND.value());
@@ -23,6 +24,17 @@ public class ResourceExceptionHandler {
 		err.setMessage(e.getMessage());
 		err.setPath(request.getRequestURI());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+	}
+	
+	@ExceptionHandler(DataBaseException.class)
+	public ResponseEntity<StandardError> database(DataBaseException e, HttpServletRequest request ){
+		StandardError err = new StandardError();
+		err.setTimestamp(Instant.now());
+		err.setStatus(HttpStatus.BAD_REQUEST.value());
+		err.setError("Database Exception!");
+		err.setMessage(e.getMessage());
+		err.setPath(request.getRequestURI());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
 	}
 	
 }
