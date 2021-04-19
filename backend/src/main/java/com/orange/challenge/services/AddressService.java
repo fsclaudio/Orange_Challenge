@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.orange.challenge.dto.AddressDTO;
+import com.orange.challenge.dto.UserDTO;
 import com.orange.challenge.entyties.Address;
+import com.orange.challenge.entyties.User;
 import com.orange.challenge.repositories.AddressRepository;
 import com.orange.challenge.services.exceptions.DataBaseException;
 import com.orange.challenge.services.exceptions.ResourceNotFoundException;
@@ -40,13 +42,7 @@ public class AddressService {
 	@Transactional
 	public AddressDTO insert(AddressDTO dto) {
 		Address entity = new Address();
-		entity.setPublicarea(dto.getPublicarea());
-		entity.setNumber(dto.getNumber());
-		entity.setComplement(dto.getComplement());
-		entity.setDistrict(dto.getDistrict());
-		entity.setCity(dto.getCity());
-		entity.setState(dto.getState());
-		entity.setZipcode(dto.getZipcode());
+		copyDtoToEntity(dto, entity);
 		entity= repository.save(entity);
 		return new AddressDTO(entity);
 	}
@@ -55,13 +51,7 @@ public class AddressService {
 	public AddressDTO update(Long id, AddressDTO dto) {
 		try {
 		Address entity = repository.getOne(id);
-		entity.setPublicarea(dto.getPublicarea());
-		entity.setNumber(dto.getNumber());
-		entity.setComplement(dto.getComplement());
-		entity.setDistrict(dto.getDistrict());
-		entity.setCity(dto.getCity());
-		entity.setState(dto.getState());
-		entity.setZipcode(dto.getZipcode());
+		copyDtoToEntity(dto, entity);
 		entity= repository.save(entity);
 		return  new AddressDTO(entity);
 		}
@@ -82,6 +72,16 @@ public class AddressService {
 		catch (DataIntegrityViolationException e) {
 			throw new DataBaseException("Integrity Violation");
 		}
+	}
+	
+	private void copyDtoToEntity(AddressDTO dto, Address entity) {
+		entity.setPublicarea(dto.getPublicarea());
+		entity.setNumber(dto.getNumber());
+		entity.setComplement(dto.getComplement());
+		entity.setDistrict(dto.getDistrict());
+		entity.setCity(dto.getCity());
+		entity.setState(dto.getState());
+		entity.setZipcode(dto.getZipcode());
 	}
 
 }

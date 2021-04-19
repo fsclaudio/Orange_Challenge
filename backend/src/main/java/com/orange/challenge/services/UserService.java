@@ -12,8 +12,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.orange.challenge.dto.AddressDTO;
 import com.orange.challenge.dto.UserDTO;
+import com.orange.challenge.entyties.Address;
 import com.orange.challenge.entyties.User;
+import com.orange.challenge.repositories.AddressRepository;
 import com.orange.challenge.repositories.UserRepository;
 import com.orange.challenge.services.exceptions.DataBaseException;
 import com.orange.challenge.services.exceptions.ResourceNotFoundException;
@@ -23,6 +26,8 @@ public class UserService {
 	
 	@Autowired
 	private UserRepository repository;
+	@Autowired
+	private AddressRepository addressRepository;
 	
 	@Transactional(readOnly = true)
 	public List<UserDTO> findAll(){
@@ -40,14 +45,8 @@ public class UserService {
 	@Transactional
 	public UserDTO insert(UserDTO dto) {
 		User entity = new User();
-	//	entity.setPublicarea(dto.getPublicarea());
-	//	entity.setNumber(dto.getNumber());
-	//	entity.setComplement(dto.getComplement());
-	//	entity.setDistrict(dto.getDistrict());
-	//	entity.setCity(dto.getCity());
-	//	entity.setState(dto.getState());
-	//	entity.setZipcode(dto.getZipcode());
-	//	entity= repository.save(entity);
+	    copyDtoToEntity(dto, entity);
+	    entity = repository.save(entity);
 		return new UserDTO(entity);
 	}
 
@@ -55,13 +54,7 @@ public class UserService {
 	public UserDTO update(Long id, UserDTO dto) {
 		try {
 		User entity = repository.getOne(id);
-		//entity.setPublicarea(dto.getPublicarea());
-	//	entity.setNumber(dto.getNumber());
-	//	entity.setComplement(dto.getComplement());
-//		entity.setDistrict(dto.getDistrict());
-//		entity.setCity(dto.getCity());
-	//	entity.setState(dto.getState());
-	//	entity.setZipcode(dto.getZipcode());
+	    copyDtoToEntity(dto, entity); 
 		entity= repository.save(entity);
 		return  new UserDTO(entity);
 		}
@@ -82,6 +75,19 @@ public class UserService {
 		catch (DataIntegrityViolationException e) {
 			throw new DataBaseException("Integrity Violation");
 		}
+	}
+	
+	private void copyDtoToEntity(UserDTO dto, User entity) {
+		    entity.setName(dto.getName());
+			entity.setEmail(dto.getEmail());
+			entity.setCpf(dto.getCpf());
+			entity.setBirtDate(dto.getBirtdate());
+			
+			entity.getAddresses().clear();
+			for (AddressDTO addDTO: dto.getAddress()) {
+				Address address = addressRepository.getOne(addDTO.getId());
+				entity.getAddresses().add(address);
+			}
 	}
 
 }
