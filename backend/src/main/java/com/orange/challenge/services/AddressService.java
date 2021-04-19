@@ -11,11 +11,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.orange.challenge.dto.AddressDTO;
-import com.orange.challenge.dto.UserDTO;
 import com.orange.challenge.entyties.Address;
-import com.orange.challenge.entyties.User;
 import com.orange.challenge.repositories.AddressRepository;
 import com.orange.challenge.services.exceptions.DataBaseException;
 import com.orange.challenge.services.exceptions.ResourceNotFoundException;

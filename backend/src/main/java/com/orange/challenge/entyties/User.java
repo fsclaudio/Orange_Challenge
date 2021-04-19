@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_users")
@@ -23,6 +24,8 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	private Long id;
+	
+	@NotNull
 	private String name;
 	
 	@Column(nullable = false, length = 250, unique=true)
@@ -31,7 +34,7 @@ public class User implements Serializable {
 	@Column(nullable = false, length = 11, unique=true)
 	private String cpf;
 	
-	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	@Column(nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant birtdate;
 	
 	@ManyToMany
