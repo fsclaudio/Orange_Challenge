@@ -47,7 +47,7 @@ public class UserService {
 		User entity = new User();
 	    copyDtoToEntity(dto, entity);
 	    entity = repository.save(entity);
-		return new UserDTO(entity);
+		return new UserDTO(entity,entity.getAddresses()); 
 	}
 
 	@Transactional

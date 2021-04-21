@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -38,10 +39,15 @@ public class AddressService {
 
 	@Transactional
 	public AddressDTO insert(AddressDTO dto) {
+		try {
 		Address entity = new Address();
 		copyDtoToEntity(dto, entity);
 		entity= repository.save(entity);
 		return new AddressDTO(entity);
+		}
+		catch (ConstraintViolationException e) {
+			throw new DataBaseException("Integrity Violation");
+		}
 	}
 
 	@Transactional

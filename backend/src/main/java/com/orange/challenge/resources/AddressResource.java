@@ -25,16 +25,16 @@ public class AddressResource {
 	@Autowired
 	private AddressService service;
 	
-	@GetMapping /// Chamado get
+	@GetMapping 
 	public ResponseEntity<List<AddressDTO>> findAll(){
 		List<AddressDTO> list = service.findAll();
-		return ResponseEntity.ok().body(list); // resposta 200
+		return ResponseEntity.ok().body(list); 
 	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<AddressDTO> findById(@PathVariable Long id){
 		AddressDTO dto = service.findById(id);
-		return ResponseEntity.ok().body(dto); // resposta 200
+		return ResponseEntity.ok().body(dto); 
 	}
 	
 	@PostMapping
@@ -42,7 +42,7 @@ public class AddressResource {
 		dto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
-		return ResponseEntity.created(uri).body(dto); //resposta 201
+		return ResponseEntity.created(uri).body(dto); 
 	}
 	
 	@PutMapping(value = "/{id}")
